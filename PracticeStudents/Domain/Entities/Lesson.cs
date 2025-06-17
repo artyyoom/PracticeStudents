@@ -5,7 +5,7 @@ using PracticeStudents.Domain.Entities;
 
 namespace PracticeStudents.Domain.Entities;
 
-public class Lesson
+public class Lesson : IEntity
 {
     public int Id { get; set; }
     public DateTime Date { get; set; }

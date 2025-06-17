@@ -6,7 +6,7 @@ using PracticeStudents.Domain.Enums;
 namespace PracticeStudents.Domain.Entities;
 
 
-public class User
+public class User : IEntity
 {
     public int Id { get; set; }
     public string Email { get; set; } = null!;

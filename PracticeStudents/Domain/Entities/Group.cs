@@ -3,7 +3,7 @@ using PracticeStudents.Domain.Entities;
 
 namespace PracticeStudents.Domain.Entities;
 
-public class Group
+public class Group : IEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;

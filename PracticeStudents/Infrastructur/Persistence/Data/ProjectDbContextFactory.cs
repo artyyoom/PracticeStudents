@@ -18,8 +18,7 @@ public class ProjectDbContextFactory : IDesignTimeDbContextFactory<ProjectDbCont
         // Получаем строку подключения из конфигурации
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        // Настраиваем провайдер базы данных, например, PostgreSQL или SQL Server
-        builder.UseNpgsql(connectionString); // или UseSqlServer(connectionString)
+        builder.UseNpgsql(connectionString);
 
         return new ProjectDbContext(builder.Options);
     }

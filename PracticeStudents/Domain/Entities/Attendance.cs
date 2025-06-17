@@ -2,7 +2,7 @@ using PracticeStudents.Domain.Entities;
 
 namespace PracticeStudents.Domain.Entities;
 
-public class Attendance
+public class Attendance : IEntity
 {
     public int Id { get; set; }
     public int LessonId { get; set; }
