@@ -1,11 +1,21 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PracticeStudents.Domain.Entities;
 
-namespace firstProject.Controllers;
+[ApiController]
+[Route("api/auth")]
+public class UserController : ControllerBase
+{
+    private readonly IService<User> userService;
 
-public class UserController : Controller {
+    public UserController(IService<User> _userService)
+    {
+        userService = _userService;
+    }
 
-    private static readonly ILogger<UserController> _logger;
-
+    [HttpPost]
+    public async Task<ActionResult<IEnumerable<UserResponseDto>>> Create([FromBody] UserRequestDto userDto)
+    {
+        var created = await userService.Create<UserRequestDto, UserResponseDto>(userDto);
+        return Ok(created);
+    }
 }

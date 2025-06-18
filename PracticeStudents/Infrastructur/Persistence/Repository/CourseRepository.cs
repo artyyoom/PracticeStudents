@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using PracticeStudents.Domain.Entities;
 
-public class CourseRepository : AbstractIRepository<Course>
+using ServiceRegistration;
+
+[ServiceScoped]
+public class CourseRepository : AbstractRepository<Course>
 {
-    public CourseRepository(DbContext context) : base(context)
+    public CourseRepository(ProjectDbContext context) : base(context)
     {
     }
 }

@@ -1,17 +1,21 @@
-
 public abstract class AbstractService<T> : IService<T> where T : class, IEntity
 {
 
     protected readonly IRepository<T> _repository;
+    protected readonly IGenericMapper _mapper;
 
-    public AbstractService(IRepository<T> repository)
+    public AbstractService(IRepository<T> repository, IGenericMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public Task<T> Create(T entity)
+    public async Task<TResDto> Create<TReqDto, TResDto>(TReqDto dto)
     {
-        return _repository.AddAsync(entity);
+        var entity = _mapper.Map<TReqDto, T>(dto);
+        var result = await _repository.AddAsync(entity);
+
+        return _mapper.Map<T, TResDto>(result);
     }
 
     public Task Delete(int id)

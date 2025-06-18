@@ -10,15 +10,15 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  app:
-    build: .
-    depends_on:
-      - db
-    environment:
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=mydb;Username=myuser;Password=mypassword
-    ports:
-      - "8080:80"
-    restart: unless-stopped
+  # app:
+  #   build: .
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=mydb;Username=myuser;Password=mypassword
+  #   ports:
+  #     - "8080:80"
+  #   restart: unless-stopped
 
 volumes:
   pgdata:

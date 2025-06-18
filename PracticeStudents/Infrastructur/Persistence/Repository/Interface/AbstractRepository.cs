@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 public abstract class AbstractRepository<T> : IRepository<T> where T : class, IEntity
 {
 
-    protected readonly DbContext _context;
-    public AbstractRepository(DbContext context)
+    protected readonly ProjectDbContext _context;
+
+    public AbstractRepository(ProjectDbContext context)
     {
         _context = context;
     }
