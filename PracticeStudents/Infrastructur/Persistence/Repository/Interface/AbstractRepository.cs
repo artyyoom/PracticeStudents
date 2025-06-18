@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 
-public abstract class AbstractIRepository<T> : IRepository<T> where T : class, IEntity
+public abstract class AbstractRepository<T> : IRepository<T> where T : class, IEntity
 {
 
     protected readonly DbContext _context;
-    public AbstractIRepository(DbContext context)
+    public AbstractRepository(DbContext context)
     {
         _context = context;
     }

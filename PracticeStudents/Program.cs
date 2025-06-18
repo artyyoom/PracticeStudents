@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped(typeof(IRepository<>), typeof(AbstractRepository<>));
+builder.Services.AddScoped(typeof(IService<>), typeof(AbstractService<>));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -9,6 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseNpgsql(connectionString));
+    
 
 var app = builder.Build();
 

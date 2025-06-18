@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 
-public interface IService<T, D>
+public interface IService<T>
 {
-    Task<T> Create(D dto);
-    Task<List<T>> GetAll();
-    Task<T> Get(int id, T entity);
-    Task<T> Update(int id, T entity);
-    Task<T> Delete(int id, T entity);
+    Task<T> Create(T entity);
+    Task<IEnumerable<T>> GetAll();
+    Task<T?> Get(int id);
+    Task Update(T entity);
+    Task Delete(int id);
 
 }
