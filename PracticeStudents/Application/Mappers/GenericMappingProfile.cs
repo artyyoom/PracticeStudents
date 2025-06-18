@@ -7,5 +7,8 @@ public class GenericMappingProfile : Profile
     {
         CreateMap<UserRequestDto, User>().ReverseMap();
         CreateMap<User, UserResponseDto>().ReverseMap();
+
+        CreateMap<CourseRequestDto, Course>().ReverseMap();
+        CreateMap<Course, CourseResponseDto>().ReverseMap();
     }
 }

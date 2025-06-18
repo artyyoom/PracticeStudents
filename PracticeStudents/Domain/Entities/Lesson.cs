@@ -1,8 +1,3 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using PracticeStudents.Domain.Entities;
-
 namespace PracticeStudents.Domain.Entities;
 
 public class Lesson : IEntity

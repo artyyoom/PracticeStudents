@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using PracticeStudents.Domain.Entities;
-
 namespace PracticeStudents.Domain.Entities;
 
 public class Group : IEntity
