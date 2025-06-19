@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeStudents.Domain.Entities;
 
@@ -40,12 +39,9 @@ public class CourseController : ControllerBase
 
     [HttpPut("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Course>>> Update(int id, [FromBody] Course course)
+    public async Task<ActionResult<IEnumerable<Course>>> Update(int id, [FromBody] CourseRequestDto dto)
     {
-        if (id != course.Id)
-            return BadRequest("ID mismatch");
-
-        await courseService.Update(course);
+        await courseService.Update(id, dto);
         return NoContent();
     }
 

@@ -33,14 +33,19 @@ public abstract class AbstractService<T> : IService<T> where T : class, IEntity
         return _repository.GetAllAsync();
     }
 
-    public async Task<TResDto> Update<TReqDto, TResDto>(TReqDto dto)
-    {
-        var entity = _mapper.Map<TReqDto, T>(dto);
+        public async Task Update<TReqDto>(int id, TReqDto dto)
+        {
 
-        await _repository.UpdateAsync(entity);
-        
-        TResDto result = _mapper.Map<T, TResDto>(entity);
+            var existingEntity = await _repository.GetByIdAsync(id);
 
-        return result;
-    }
+            if (existingEntity == null)
+            {
+                throw new KeyNotFoundException($"Entity with id {id} not found.");
+            }
+
+            _mapper.Map(dto, existingEntity);
+
+            await _repository.UpdateAsync(existingEntity);
+
+        }
 }

@@ -8,8 +8,14 @@ public class GenericMapper : IGenericMapper
     {
         _mapper = mapper;
     }
+
     public TDestination Map<TSource, TDestination>(TSource source)
     {
         return _mapper.Map<TDestination>(source);
+    }
+
+    public TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
+    {
+        return _mapper.Map(source, destination);
     }
 }

@@ -1,4 +1,4 @@
-public class StudentsInGroupsResponseDto
+public class StudentsGroupResponseDto
 {
     public int Id { get; set; }
     public int StudentId { get; set; }
