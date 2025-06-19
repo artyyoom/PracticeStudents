@@ -26,6 +26,8 @@ builder.Services.Scan(scan => scan
     .AddClasses(classes => classes.AssignableTo(typeof(IRepository<>)))
         .AsImplementedInterfaces()
         .WithScopedLifetime());
+builder.Services.AddScoped<GroupRepository>();
+builder.Services.AddScoped<GroupService>();
 
 
 

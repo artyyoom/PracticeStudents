@@ -2,29 +2,29 @@ using Microsoft.AspNetCore.Mvc;
 using PracticeStudents.Domain.Entities;
 
 [ApiController]
-[Route("api/StudentsGroups")]
+[Route("api/groups/{groupId}/students")]
 public class StudentsGroupController : ControllerBase
 {
-    private readonly IService<StudentsGroup> service;
+    private readonly StudentsGroupService service;
 
-    public StudentsGroupController(IService<StudentsGroup> _service)
+    public StudentsGroupController(StudentsGroupService _service)
     {
         service = _service;
     }
 
     [HttpPost]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<StudentsGroupResponseDto>>> Create([FromBody] StudentsGroupRequestDto requestDto)
+    public async Task<ActionResult<IEnumerable<StudentsGroupResponseDto>>> Create(int groupID, StudentsGroupRequestDto requestDto)
     {
-        var created = await service.Create<StudentsGroupRequestDto, StudentsGroupResponseDto>(requestDto);
+        var created = await service.Create(requestDto, groupID);
         return Created(string.Empty, created);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{studentId}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<StudentsGroup>>> Delete(int id)
+    public async Task<ActionResult<IEnumerable<StudentsGroup>>> Delete(int studentId)
     {
-        await service.Delete(id);
+        await service.Delete(studentId);
         return NoContent();
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 public abstract class AbstractRepository<T> : IRepository<T> where T : class, IEntity
@@ -35,6 +36,20 @@ public abstract class AbstractRepository<T> : IRepository<T> where T : class, IE
 
     public async Task DeleteByIdAsync(int id)
     {
-        await _context.Set<T>().Where(x => x.Id == id).ExecuteDeleteAsync();
+        var entity = await _context.Set<T>().FindAsync(id);
+
+        if (entity != null)
+        {
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
     }
+    
+    public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _context.Set<T>().AnyAsync(predicate);
+    }
+
+
 }

@@ -1,22 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
-using PracticeStudents.Domain.Entities;
 
 [ApiController]
 [Route("api/groups")]
 public class GroupController : ControllerBase
 {
-    private readonly IService<Group> service;
+    private readonly GroupService service;
 
-    public GroupController(IService<Group> _service)
+    public GroupController(GroupService _service)
     {
         service = _service;
     }
 
     [HttpGet]
     // [Authorize]
-    public async Task<ActionResult<IEnumerable<Group>>> GetAll()
+    public async Task<ActionResult<IEnumerable<GroupResponseDto>>> GetByCourse([FromQuery] string requestName)
     {
-        var result = await service.GetAll<GroupResponseDto>();
+        var result = await service.GetByFilter(requestName);
         return Ok(result);
     }
 
@@ -30,7 +29,7 @@ public class GroupController : ControllerBase
 
     [HttpPut("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Group>>> Update(int id, [FromBody] GroupRequestDto requestDto)
+    public async Task<IActionResult> Update(int id, [FromBody] GroupRequestDto requestDto)
     {
         await service.Update(id, requestDto);
         return NoContent();
@@ -38,7 +37,7 @@ public class GroupController : ControllerBase
 
     [HttpDelete("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Group>>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         await service.Delete(id);
         return NoContent();
