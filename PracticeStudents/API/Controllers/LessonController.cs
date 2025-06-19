@@ -16,7 +16,7 @@ public class LessonController : ControllerBase
     // [Authorize]
     public async Task<ActionResult<IEnumerable<Lesson>>> GetAll()
     {
-        var result = await service.GetAll();
+        var result = await service.GetAll<LessonResponseDto>();
         return Ok(result);
     }
 

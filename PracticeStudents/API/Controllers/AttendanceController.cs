@@ -16,7 +16,7 @@ public class AttendanceController : ControllerBase
     // [Authorize]
     public async Task<ActionResult<IEnumerable<Attendance>>> GetAll()
     {
-        var result = await service.GetAll();
+        var result = await service.GetAll<AttendanceResponseDto>();
         return Ok(result);
     }
 

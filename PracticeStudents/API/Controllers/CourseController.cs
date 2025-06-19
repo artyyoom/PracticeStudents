@@ -17,7 +17,7 @@ public class CourseController : ControllerBase
     // [Authorize]
     public async Task<ActionResult<IEnumerable<Course>>> GetAll()
     {
-        var courses = await courseService.GetAll();
+        var courses = await courseService.GetAll<CourseResponseDto>();
         return Ok(courses);
     }
 
@@ -25,7 +25,7 @@ public class CourseController : ControllerBase
     // [Authorize]
     public async Task<ActionResult<IEnumerable<Course>>> Get(int id)
     {
-        var course = await courseService.Get(id);
+        var course = await courseService.Get<CourseResponseDto>(id);
         return Ok(course);
     }
 

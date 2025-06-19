@@ -16,7 +16,7 @@ public class GroupController : ControllerBase
     // [Authorize]
     public async Task<ActionResult<IEnumerable<Group>>> GetAll()
     {
-        var result = await service.GetAll();
+        var result = await service.GetAll<GroupResponseDto>();
         return Ok(result);
     }
 
