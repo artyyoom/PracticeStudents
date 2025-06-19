@@ -23,29 +23,36 @@ public abstract class AbstractService<T> : IService<T> where T : class, IEntity
         return _repository.DeleteByIdAsync(id);
     }
 
-    public Task<T?> Get(int id)
+    public async Task<TResDto> Get<TResDto>(int id)
     {
-        return _repository.GetByIdAsync(id);
-    }
+        var entity = await _repository.GetByIdAsync(id);
 
-    public Task<IEnumerable<T>> GetAll()
-    {
-        return _repository.GetAllAsync();
-    }
+        if (entity == null)
+            throw new KeyNotFoundException($"Entity with id {id} not found.");
 
-        public async Task Update<TReqDto>(int id, TReqDto dto)
-        {
-
-            var existingEntity = await _repository.GetByIdAsync(id);
-
-            if (existingEntity == null)
-            {
-                throw new KeyNotFoundException($"Entity with id {id} not found.");
-            }
-
-            _mapper.Map(dto, existingEntity);
-
-            await _repository.UpdateAsync(existingEntity);
-
+        return _mapper.Map<T, TResDto>(entity);
         }
+
+    public async Task<IEnumerable<TResDto>> GetAll<TResDto>()
+    {
+        var entities = await _repository.GetAllAsync();
+        var dtos = _mapper.Map<IEnumerable<T>, IEnumerable<TResDto>>(entities);
+        return dtos;
+    }
+
+    public async Task Update<TReqDto>(int id, TReqDto dto)
+    {
+
+        var existingEntity = await _repository.GetByIdAsync(id);
+
+        if (existingEntity == null)
+        {
+            throw new KeyNotFoundException($"Entity with id {id} not found.");
+        }
+
+        _mapper.Map(dto, existingEntity);
+
+        await _repository.UpdateAsync(existingEntity);
+
+    }
 }
