@@ -19,5 +19,7 @@ public class GenericMappingProfile : Profile
 
         CreateMap<AttendanceRequestDto, Attendance>().ReverseMap();
         CreateMap<Attendance, AttendanceResponseDto>().ReverseMap();
+
+        CreateMap<User, UserProfileDto>().ReverseMap();
     }
 }
