@@ -30,7 +30,7 @@ public class UserController : ControllerBase
         var token = await service.Login(dto);
 
         if (token == null)
-            return BadRequest("User with this email already exists.");
+            return BadRequest("User with this email not found");
 
         return Ok(new { token });
         }
