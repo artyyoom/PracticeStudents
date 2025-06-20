@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 public interface IService<T>
 {
     Task<TResDto> Create<TDto, TResDto>(TDto dto);
@@ -5,4 +7,5 @@ public interface IService<T>
     Task<TResDto> Get<TResDto>(int id);
     Task Update<TReqDto>(int id, TReqDto dto);
     Task Delete(int id);
+    
 }

@@ -26,9 +26,15 @@ builder.Services.Scan(scan => scan
     .AddClasses(classes => classes.AssignableTo(typeof(IRepository<>)))
         .AsImplementedInterfaces()
         .WithScopedLifetime());
+
 builder.Services.AddScoped<GroupRepository>();
 builder.Services.AddScoped<GroupService>();
-
+builder.Services.AddScoped<LessonRepository>();
+builder.Services.AddScoped<LessonService>();
+builder.Services.AddScoped<StudentsGroupRepository>();
+builder.Services.AddScoped<StudentsGroupService>();
+builder.Services.AddScoped<AttendanceRepository>();
+builder.Services.AddScoped<AttendanceService>();
 
 
 builder.Services.AddDbContext<ProjectDbContext>(options =>

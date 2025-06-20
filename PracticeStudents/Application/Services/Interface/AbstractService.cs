@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 public abstract class AbstractService<T> : IService<T> where T : class, IEntity
 {
 
@@ -18,7 +20,7 @@ public abstract class AbstractService<T> : IService<T> where T : class, IEntity
         return _mapper.Map<T, TResDto>(result);
     }
 
-    public Task Delete(int id)
+    public virtual Task Delete(int id)
     {
         return _repository.DeleteByIdAsync(id);
     }

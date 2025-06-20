@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using PracticeStudents.Domain.Entities;
 using PracticeStudents.Domain.Enums;
 
 

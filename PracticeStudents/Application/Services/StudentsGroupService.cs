@@ -10,8 +10,8 @@ public class StudentsGroupService : AbstractService<StudentsGroup>
 
     public async Task<StudentsGroupResponseDto> Create(StudentsGroupRequestDto dto, int groupId)
     {
-        var groupExists = await _studentsGroupRepository.ExistsAsync(g => g.Id == groupId);
-        
+        var groupExists = await _studentsGroupRepository.ExistsAsync(s => s.Id == groupId);
+
         if (!groupExists)
             throw new ArgumentException($"Group with id {groupId} does not exist.");
 
@@ -20,5 +20,15 @@ public class StudentsGroupService : AbstractService<StudentsGroup>
         var result = await _repository.AddAsync(entity);
 
         return _mapper.Map<StudentsGroup, StudentsGroupResponseDto>(result);
-    } 
+    }
+    
+    public override async Task Delete(int studentId)
+    {
+        var entity = await _studentsGroupRepository.GetByFuncAsync(s => s.StudentId == studentId);
+
+        if (entity == null)
+            throw new ArgumentException($"Student with id {studentId} does not exist.");
+
+        await _repository.DeleteByIdAsync(entity.Id);
+    }
 }

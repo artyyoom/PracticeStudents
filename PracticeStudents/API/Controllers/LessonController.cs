@@ -5,17 +5,29 @@ using PracticeStudents.Domain.Entities;
 [Route("api/lessons")]
 public class LessonController : ControllerBase
 {
-    private readonly IService<Lesson> service;
+    private readonly LessonService service;
 
-    public LessonController(IService<Lesson> _service)
+    public LessonController(LessonService _service)
     {
         service = _service;
     }
 
     [HttpGet]
     // [Authorize]
-    public async Task<ActionResult<IEnumerable<Lesson>>> GetAll()
+    public async Task<ActionResult<IEnumerable<Lesson>>> GetByFilter([FromQuery] int? groupId, [FromQuery] int? courseId)
     {
+
+        if (groupId.HasValue)
+        {
+            var lessons = await service.GetByGroupIdAsync(groupId.Value);
+            return Ok(lessons);
+        }
+        else if (courseId.HasValue)
+        {
+            var lessons = await service.GetByCourseIdAsync(courseId.Value);
+            return Ok(lessons);
+        }
+        
         var result = await service.GetAll<LessonResponseDto>();
         return Ok(result);
     }
@@ -30,7 +42,7 @@ public class LessonController : ControllerBase
 
     [HttpPut("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Lesson>>> Update(int id, [FromBody] LessonRequestDto requestDto)
+    public async Task<ActionResult> Update(int id, [FromBody] LessonRequestDto requestDto)
     {
         await service.Update(id, requestDto);
         return NoContent();
@@ -38,7 +50,7 @@ public class LessonController : ControllerBase
 
     [HttpDelete("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Lesson>>> Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
         await service.Delete(id);
         return NoContent();

@@ -12,10 +12,22 @@ public class UserController : ControllerBase
         userService = _userService;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<IEnumerable<UserResponseDto>>> Create([FromBody] UserRequestDto userDto)
+    [HttpPost("register")]
+    public async Task<ActionResult<IEnumerable<UserResponseDto>>> Register([FromBody] UserRequestDto userDto)
     {
         var created = await userService.Create<UserRequestDto, UserResponseDto>(userDto);
         return Ok(created);
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<IEnumerable<UserResponseDto>>> Login([FromBody] UserLoginDto userDto)
+    {
+        return Ok();
+    }
+
+    [HttpGet("profile")]
+    public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetProfile()
+    {
+        return Ok();
     }
 }

@@ -39,7 +39,7 @@ public class CourseController : ControllerBase
 
     [HttpPut("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Course>>> Update(int id, [FromBody] CourseRequestDto dto)
+    public async Task<ActionResult> Update(int id, [FromBody] CourseRequestDto dto)
     {
         await courseService.Update(id, dto);
         return NoContent();
@@ -47,7 +47,7 @@ public class CourseController : ControllerBase
 
     [HttpDelete("{id}")]
     // [Authorize(Roles = "Teacher")]
-    public async Task<ActionResult<IEnumerable<Course>>> Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
         await courseService.Delete(id);
         return NoContent();
