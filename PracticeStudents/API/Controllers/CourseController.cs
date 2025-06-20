@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeStudents.Domain.Entities;
 
@@ -14,7 +15,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Course>>> GetAll()
     {
         var courses = await courseService.GetAll<CourseResponseDto>();
@@ -22,7 +23,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Course>>> Get(int id)
     {
         var course = await courseService.Get<CourseResponseDto>(id);
@@ -30,7 +31,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpPost]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult<IEnumerable<CourseResponseDto>>> Create([FromBody] CourseRequestDto courseDto)
     {
         var created = await courseService.Create<CourseRequestDto, CourseResponseDto>(courseDto);
@@ -38,7 +39,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult> Update(int id, [FromBody] CourseRequestDto dto)
     {
         await courseService.Update(id, dto);
@@ -46,7 +47,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult> Delete(int id)
     {
         await courseService.Delete(id);

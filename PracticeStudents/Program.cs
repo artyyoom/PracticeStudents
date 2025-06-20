@@ -1,5 +1,7 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,6 @@ builder.Services.AddAutoMapper(typeof(GenericMappingProfile).Assembly);
 builder.Services.AddScoped<IGenericMapper, GenericMapper>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// builder.Services.RegisterServices();
 
 var assembly = Assembly.GetExecutingAssembly();
 
@@ -29,6 +29,8 @@ builder.Services.Scan(scan => scan
 
 builder.Services.AddScoped<GroupRepository>();
 builder.Services.AddScoped<GroupService>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LessonRepository>();
 builder.Services.AddScoped<LessonService>();
 builder.Services.AddScoped<StudentsGroupRepository>();
@@ -40,6 +42,21 @@ builder.Services.AddScoped<AttendanceService>();
 builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = AuthOptions.ISSUER,
+            ValidateAudience = true,
+            ValidAudience = AuthOptions.AUDIENCE,
+            ValidateLifetime = true,
+            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true,
+        };
+    });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -50,7 +67,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllers();
 

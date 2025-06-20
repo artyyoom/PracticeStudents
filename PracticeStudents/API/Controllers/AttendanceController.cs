@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeStudents.Domain.Entities;
 
@@ -13,7 +14,7 @@ public class AttendanceController : ControllerBase
     }
 
     [HttpGet("lessons/{lessonId}/attendance")]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Attendance>>> GetByLessonId(int lessonId)
     {
         var result = await service.GetListByFuncAsync(lessonId);
@@ -21,7 +22,7 @@ public class AttendanceController : ControllerBase
     }
 
     [HttpPost("lessons/{lessonId}/attendance")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult<IEnumerable<AttendanceResponseDto>>> Create(
         int lessonId,[FromBody] IEnumerable<AttendanceRequestDto> requestDtos)
     {
@@ -30,7 +31,7 @@ public class AttendanceController : ControllerBase
     }
 
     [HttpPut("attendance/{attendanceId}")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult> Update(int attendanceId, [FromBody] AttendanceRequestDto requestDto)
     {
         await service.Update(attendanceId, requestDto);

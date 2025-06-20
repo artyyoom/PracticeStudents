@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using PracticeStudents.Domain.Entities;
 
 public interface IRepository<T>
 {

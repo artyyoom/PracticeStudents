@@ -8,4 +8,6 @@ public class UserRepository : AbstractRepository<User>
     public UserRepository(ProjectDbContext context) : base(context)
     {
     }
+
+    
 }

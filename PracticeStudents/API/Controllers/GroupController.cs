@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -12,7 +13,7 @@ public class GroupController : ControllerBase
     }
 
     [HttpGet]
-    // [Authorize]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<GroupResponseDto>>> GetByCourse([FromQuery] string requestName)
     {
         var result = await service.GetByFilter(requestName);
@@ -20,7 +21,7 @@ public class GroupController : ControllerBase
     }
 
     [HttpPost]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult<IEnumerable<GroupResponseDto>>> Create([FromBody] GroupRequestDto requestDto)
     {
         var created = await service.Create<GroupRequestDto, GroupResponseDto>(requestDto);
@@ -28,7 +29,7 @@ public class GroupController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<IActionResult> Update(int id, [FromBody] GroupRequestDto requestDto)
     {
         await service.Update(id, requestDto);
@@ -36,7 +37,7 @@ public class GroupController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<IActionResult> Delete(int id)
     {
         await service.Delete(id);

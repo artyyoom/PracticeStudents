@@ -1,33 +1,51 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PracticeStudents.Domain.Entities;
 
 [ApiController]
 [Route("api/auth")]
 public class UserController : ControllerBase
 {
-    private readonly IService<User> userService;
+    private readonly UserService service;
 
-    public UserController(IService<User> _userService)
+    public UserController(UserService _userService)
     {
-        userService = _userService;
+        service = _userService;
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<IEnumerable<UserResponseDto>>> Register([FromBody] UserRequestDto userDto)
+    public async Task<ActionResult> Register([FromBody] RegisterRequestDto dto)
     {
-        var created = await userService.Create<UserRequestDto, UserResponseDto>(userDto);
-        return Ok(created);
+        bool value = await service.Register(dto);
+
+        if (value == false)
+        {
+            return BadRequest("User with this email already exists.");
+        }
+        return Ok("User registered successfully.");
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<IEnumerable<UserResponseDto>>> Login([FromBody] UserLoginDto userDto)
+    public async Task<ActionResult<object>> Login([FromBody] LoginRequestDto dto)
     {
-        return Ok();
-    }
+        var token = await service.Login(dto);
+
+        if (token == null)
+            return BadRequest("User with this email already exists.");
+
+        return Ok(new { token });
+        }
 
     [HttpGet("profile")]
-    public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetProfile()
+    [Authorize]
+    public async Task<ActionResult<UserProfileDto>> GetProfile()
     {
-        return Ok();
+        var email = User.Identity?.Name;
+
+        if (string.IsNullOrEmpty(email))
+            return Unauthorized();
+
+        var userProfileDto = await service.GetProfile(email);
+
+        return Ok(userProfileDto);
     }
 }

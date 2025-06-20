@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeStudents.Domain.Entities;
 
@@ -13,7 +14,7 @@ public class StudentsGroupController : ControllerBase
     }
 
     [HttpPost]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult<IEnumerable<StudentsGroupResponseDto>>> Create(int groupID, [FromBody] StudentsGroupRequestDto requestDto)
     {
         var created = await service.Create(requestDto, groupID);
@@ -21,7 +22,7 @@ public class StudentsGroupController : ControllerBase
     }
 
     [HttpDelete("{studentId}")]
-    // [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<ActionResult> Delete(int studentId)
     {
         await service.Delete(studentId);
