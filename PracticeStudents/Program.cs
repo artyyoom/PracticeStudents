@@ -2,6 +2,8 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +89,14 @@ builder.Services.AddSwaggerGen(c =>
 
 
 var app = builder.Build();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()                     // Минимальный уровень логов
+    .Enrich.FromLogContext()                         // Добавляет контекст логирования
+    .WriteTo.Console(new CompactJsonFormatter())    // Вывод в консоль в компактном JSON формате
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day) // Логи в файл с ротацией по дням
+    .CreateLogger();
+
 
 if (app.Environment.IsDevelopment())
 {
