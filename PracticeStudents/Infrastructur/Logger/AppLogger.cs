@@ -1,20 +1,26 @@
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
+using System;
 
 public static class AppLogger
 {
-    // Инициализация логгера (вызывать один раз при старте приложения)
     public static void InitLogger()
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.Console()  // Логи в консоль
+            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day) // Логи в файл с ротацией
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+            {
+                AutoRegisterTemplate = true,
+                IndexFormat = "myapp-logs-{0:yyyy.MM.dd}",  // Индекс с датой
+                ModifyConnectionSettings = conn => conn.BasicAuthentication("username", "password")
+            })
             .CreateLogger();
     }
 
-    // Быстрые методы для логирования разных уровней
     public static void Info(string message, params object[] args)
     {
         Log.Information(message, args);
@@ -40,13 +46,11 @@ public static class AppLogger
         Log.Fatal(message, args);
     }
 
-    // Метод для логирования исключений с сообщением
     public static void Error(Exception ex, string message, params object[] args)
     {
         Log.Error(ex, message, args);
     }
 
-    // Вызвать при завершении приложения для корректного закрытия логгера
     public static void CloseAndFlush()
     {
         Log.CloseAndFlush();
